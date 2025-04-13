@@ -11,14 +11,12 @@ This is a Java desktop application built with **JavaFX** and **MySQL** that allo
 - Query users by name
 - Display all users in a table view
 - Upload and show user profile images
-- View switching between Primary and Secondary screens
 
 ## 🧰 Technologies Used
 
 - Java 17+
 - JavaFX (FXML, Controls, SceneBuilder)
 - MySQL (Remote/Azure setup)
-- JDBC
 - CSS styling for JavaFX UI
 
 ## 🗃️ Database Schema
