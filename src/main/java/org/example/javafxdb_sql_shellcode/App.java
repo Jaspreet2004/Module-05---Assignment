@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Scanner;
 import javafx.scene.paint.Color;
 import org.example.javafxdb_sql_shellcode.db.ConnDbOps;
-
 /**
  * JavaFX App
  */
@@ -93,11 +92,7 @@ public class App extends Application {
         } while (input != 'e');
 
         scan.close();
-
        
     }
-
-
-
 
 }

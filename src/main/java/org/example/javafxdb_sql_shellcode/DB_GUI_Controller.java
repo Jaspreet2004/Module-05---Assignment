@@ -32,7 +32,8 @@ public class DB_GUI_Controller implements Initializable {
 
 
     @FXML
-    TextField first_name, last_name, department, major;
+    TextField name, email, phone, address, password;
+    //TextField first_name, last_name, department, major;
     @FXML
     private TableView<Person> tv;
     @FXML
@@ -43,27 +44,69 @@ public class DB_GUI_Controller implements Initializable {
     @FXML
     ImageView img_view;
 
+    // Display Button
+    @FXML
+    void displayButton(ActionEvent event) {
+        // Setup cell factories
+        ObservableList<Person> userList = FXCollections.observableArrayList(cdbop.getAllUsersAsPersons());
+        tv.setItems(userList);
+    }
 
+    // Insert Button
+    @FXML
+    void insertButton(ActionEvent event) {
+        String nameVal = name.getText();
+        String emailVal = email.getText();
+        String phoneVal = phone.getText();
+        String addressVal = address.getText();
+        String passwordVal = password.getText();
+
+        if (nameVal.isEmpty() || emailVal.isEmpty() || passwordVal.isEmpty()) {
+            System.out.println("Name, Email, and Password are required.");
+            return;
+        }
+
+        cdbop.insertUser(nameVal, emailVal, phoneVal, addressVal, passwordVal);
+
+        displayButton(event);
+        clearForm();
+    }
+
+    // Query Button
+    @FXML
+    void queryButton(ActionEvent event) {
+        String nameVal = name.getText();
+
+        if (nameVal.isEmpty()) {
+            System.out.println("Enter a name to search.");
+            return;
+        }
+
+        ObservableList<Person> matchedUsers = FXCollections.observableArrayList(cdbop.queryUsersByName(nameVal));
+
+        if (matchedUsers.isEmpty()) {
+            System.out.println("No matching users found.");
+        }
+
+        tv.setItems(matchedUsers);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //tv_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //tv_fn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        //tv_ln.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        //tv_dept.setCellValueFactory(new PropertyValueFactory<>("dept"));
-        //tv_major.setCellValueFactory(new PropertyValueFactory<>("major"));
-
-
-        //tv.setItems(data);
+        tv_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tv_fn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        tv_ln.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        tv_dept.setCellValueFactory(new PropertyValueFactory<>("dept"));
+        tv_major.setCellValueFactory(new PropertyValueFactory<>("major"));
     }
-
 
     @FXML
     protected void clearForm() {
-        first_name.clear();
-        last_name.setText("");
-        department.setText("");
-        major.setText("");
+        name.clear();
+        email.clear();
+        phone.clear();
+        address.clear();
+        password.clear();
     }
 
     @FXML
@@ -71,16 +114,11 @@ public class DB_GUI_Controller implements Initializable {
         System.exit(0);
     }
 
-
-
-
     @FXML
     protected void deleteRecord() {
         Person p= tv.getSelectionModel().getSelectedItem();
         data.remove(p);
     }
-
-
 
     @FXML
     protected void showImage() {
@@ -90,8 +128,6 @@ public class DB_GUI_Controller implements Initializable {
 
         }
     }
-
-
 
     public void connectButton(ActionEvent actionEvent) {
         cdbop.connectToDatabase();
